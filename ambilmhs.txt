@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script type="text/javascript">
+    //   $(document).ready(function(){
+    //             $("#cari").click(function(){
+    //                 var search=$("#carinama").val();
+    //                 var url="http://john.petra.ac.id/~justin/finger.php?s=";
+    //                 var namaencode=encodeURI(url+search);
+    //                 alert(namaencode);
+    //                 var pil=$("input[name='pilihan']:checked").val();
+    //                 if(pil=="mhs"){
+    //                     $.getJSON(namaencode,function(data){
+    //                     for(i in data.hasil){
+    //                             $("#datamd").append("<tr><td>"+
+    //                             data.hasil[i].nama+"</td><td>"+
+    //                             data.hasil[i].login+"</td></tr>");
+    //                         }
+    //                     });
+    //                 }
+    //                 else if (pil=="dosen"){
+    //                     alert("dsa")
+    //                 }
+    //             })
+    //         })
+    </script>
+</head>
+<body>
+    <div class="jumbotron">
+        <h1 class="display-4" style="text-align:center;">Cari Mahasiswa atau Dosen </h1> 
+        <form method="get" action="">
+            <center>
+            <div class="form-element">
+            <fieldset>
+                <h3>Pilih yang mau dicari</h3>
+                    <label for="mahasiswa">Mahasiswa</label>
+                    <input type="radio" name="pilihan" value="mhs" id="mahasiswa">
+                    <label for="lecture">Dosen</label>
+                    <input type="radio" name="pilihan" value="dosen" id="lecture">
+            </fieldset>
+                <input type="text" name="carinama" placeholder="Input nama">
+            </div>
+            </center>
+            <hr class="my-4">
+	    		<center> <button input class="btn btn-primary btn-lg" type="submit" name="cari"> Cari</button></center>
+        </form>
+    </div>
+    <table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Nama</th>
+            <th>User Login</th>
+        </tr>
+    </thead>
+    <tbody id="datamd"></tbody>
+    </table>
+</body>
+</html>
+
+<?php
+if(isset($_GET['cari']))
+{
+    $nama=$_GET['carinama'];
+    $namaencode=urlencode($nama);
+    $pil=$_GET['pilihan'];
+    $cekbox="checkbox";
+    $valuecek="data.hasil[i]";
+    echo $nama.'<br>'.$pil.'<br>'.$namaencode;
+    if($pil==''){
+        echo '<script>alert("Harap memilih")</script>';
+    }
+    else if($pil=="mhs"){
+        echo '
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script>
+            $(document).ready(function(){
+                $.getJSON("http://john.petra.ac.id/~justin/finger.php?s='.$namaencode.'",function(data){
+                    for(i in data.hasil){
+                        console.log(i);
+                        $("#datamd").append("<tr><td>"+
+                        data.hasil[i].nama+"</td><td>"+
+                        data.hasil[i].login+"</td><td><input type='.$cekbox.' value="+data.hasil[i].login+" id=login"+i+"></td></tr>");
+                    }
+                });
+            });
+        </script>
+        ';
+    }
+    else if($pil=="dosen"){
+        echo '
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script>
+            $(document).ready(function(){
+                $.getJSON("http://peter.petra.ac.id/~justin/finger.php?s='.$namaencode.'",function(data){
+                    for(i in data.hasil){
+                        $("#datamd").append("<tr><td>"+
+                        data.hasil[i].nama+"</td><td>"+
+                        data.hasil[i].login+"</td></tr>");
+                    }
+                });
+            });
+        </script>
+        ';
+    }
+}
+    
+?>
+
